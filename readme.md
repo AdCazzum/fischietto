@@ -41,3 +41,26 @@ propose and implement proof-of-personhood/identity solutions using unique identi
 - **Anonymity**: Ensures the whistleblower's identity is protected via ZK proofs and encryption.
 - **Verifiability**: Uses cryptographic proofs to verify the whistleblower's identity without revealing personal details.
 - **Data Security**: Leveraging FHE ensures that no one can access the sensitive data within reports and votes without proper decryption keys.
+
+## Technical Details
+
+### Frontend:
+
+To configure the frontend integrated with the Aztec solution, which ensures identity verification linked to a corporation without sharing sensitive information, we support Google’s OAuth2.
+
+#### Steps to configure Google OAuth2:
+1. **Create a Project in Google Cloud Platform (GCP)**:
+   - Go to the [GCP Console](https://console.cloud.google.com/).
+   - Create a new project for the whistleblowing app.
+   
+2. **Configure OAuth Consent Screen**:
+   - Navigate to **API & Services** > **OAuth consent screen**.
+   - Set the app name, authorized domains, and privacy policy URL.
+   
+3. **Create OAuth 2.0 Credentials**:
+   - Under **Credentials**, click **Create Credentials** > **OAuth 2.0 Client IDs**.
+   - Specify application type (e.g., web) and configure the **redirect URIs**.
+
+This enables whistleblowers to log in and verify their identity via Google without exposing personal data, thanks to the privacy-preserving ZK proofs implemented with Aztec.
+
+### Smart Contracts:
