@@ -3,8 +3,6 @@ import { deployFischiettoFixture, getTokensFromFaucet } from "./Fischietto.fixtu
 import hre from "hardhat";
 
 function stringToUint256(input: string): bigint {
-    input = input.padEnd(32, ' ');
-  
     let result = BigInt(0);
 
     for (let i = 0; i < 32; i++) {
@@ -34,6 +32,35 @@ function uint256ToString(input: bigint): string {
     return chars.reverse().join('');
 }
 
+async function createPermitForContract(
+  hre: HardhatRuntimeEnvironment,
+  contractAddress: string,
+): Promise<any> {
+  const provider = hre.ethers.provider;
+  const signer = await hre.ethers.getSigners();
+  const fhenixjs = hre.fhenixjs;
+
+  const permit = await fhenixjs.generatePermit(contractAddress, provider, signer[0]);
+  return fhenixjs.extractPermitPermission(permit);
+}
+
+async function encryptMessage(fhenixjs: any, message: string): BigInt[] {
+  if (message.length >= 128) {
+    throw new Error(`The string ${message} is ${message.length - 128} too long`)
+  }
+  const paddedMessage = message.padEnd(128, " ");
+  return Promise.all([
+    paddedMessage.slice(0, 32),
+    paddedMessage.slice(32, 64),
+    paddedMessage.slice(64, 96),
+    paddedMessage.slice(96, 128)
+  ].map(stringToUint256).map(m => fhenixjs.encrypt_uint256(m)));
+}
+
+async function decryptMessage(ss: string[], fischiettoAddress): string {
+  return (await Promise.all(ss.map(s => hre.fhenixjs.unseal(fischiettoAddress, s)))).map(uint256ToString).join("");
+}
+
 describe("Unit tests", function () {
   before(async function () {
     this.signers = {} as Signers;
@@ -46,6 +73,7 @@ describe("Unit tests", function () {
 
     // initiate fhenixjs
     this.fhenixjs = hre.fhenixjs;
+    this.permission = await createPermitForContract(hre, address);
 
     // set admin account/signer
     const signers = await hre.ethers.getSigners();
@@ -55,20 +83,19 @@ describe("Unit tests", function () {
   describe("Fischietto", function () {
     it("Add a report", async function () {
 
-      const foo = await this.fhenixjs.encrypt_uint256(stringToUint256("ciao"));
+      const eMessage = await encryptMessage(fhenixjs, `
+Nel mezzo del cammin di nostra vita
+mi ritrovai per una selva oscura,
+ché la diritta via era smarrita.    
+      `);
 
-      let eMessage = [
-        foo,
-        foo,
-        foo,
-        foo
-      ];
       await this.fischietto.connect(this.signers.admin).whistle(
         1, eMessage, 1, "BeatData", "xxx", "yyy"
       );
-      let report = await this.fischietto.reports(1);
-      let message = await this.fischietto.getMessage(1);
-      console.log(uint256ToString(message[0]));
+
+      const encryptedMessage = await this.fischietto.getMessage(1, this.permission);
+
+      console.log(await decryptMessage(encryptedMessage, await this.fischietto.getAddress()));   
     });
   });
 });
