@@ -16,7 +16,7 @@
     "cal-sans": "^1.0.1",
     "dotenv": "^16.4.5",
     "ethers": "^6.13.3",
-    "fhenixjs": "^0.21",
+    "fhenixjs": "^0.2.1",
     "idb-keyval": "^6.2.1",
     "next": "14.2.11",
     "react": "^18",
