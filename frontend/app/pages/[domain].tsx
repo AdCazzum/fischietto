@@ -18,6 +18,11 @@ import { set } from 'idb-keyval';
 import { FhenixClient } from "fhenixjs";
 import { BrowserProvider } from "ethers";
 import { EncryptionTypes } from "fhenixjs";
+import { Fischietto } from "../../../onchain/types"
+import FischiettoAbi from "../../../onchain/artifacts/contracts/Fischietto.sol/Fischietto.json" // Import ABI
+import FischiettoSc from "../../../onchain/deployments/localfhenix/Fischietto.json" // Import ABI
+
+import { Contract } from "ethers";
 
 export default function DomainChatPage() {
   const params = useParams();
@@ -34,6 +39,9 @@ export default function DomainChatPage() {
     if (typeof window.ethereum !== "undefined") {
       try {
         const provider = new BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+
+        const contract = new Contract(FischiettoSc.address, FischiettoAbi.abi, signer) as unknown as Fischietto;
 
         const fhenixClient = new FhenixClient({ provider });
         let encrypted = await fhenixClient.encrypt(5, EncryptionTypes.uint8);
@@ -124,7 +132,7 @@ export default function DomainChatPage() {
       message.proof = proof;
 
       setStatus("Proof generated. Submitting message...");
-      await submitMessage(message);
+      // await submitMessage(message);
 
       // Update message list
       reFetch();

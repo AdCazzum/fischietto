@@ -422,15 +422,17 @@ export async function generateProof(
   const { witness } = await noir.execute(input);
   console.log(2, witness)
 
-  const proof = await backend.generateProof(witness);
-  console.log(3, proof)
+  // const proof = await backend.generateProof(witness); //TODO: here will go the actual proof genertion :)
+  // console.log(3, proof)
 
   const provingTime = performance.now() - startTime;
   console.log(4, provingTime)
 
-  console.log("Proof", proof);
+  // console.log("Proof", proof);
 
-  return { proof: proof.proof, provingTime };
+  const fakeProof: Uint8Array = new Uint8Array(64); // Creating a 64-byte array
+
+  return { proof: fakeProof, provingTime };
 }
 
 export function splitBigIntToChunks(
