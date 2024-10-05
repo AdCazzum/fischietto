@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>StealthNote</title>
+        <title>Fischietto</title>
       </Head>
 
       <div className="page">
