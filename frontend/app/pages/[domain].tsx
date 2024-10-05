@@ -99,7 +99,7 @@ export default function DomainChatPage() {
       // Update message list
       reFetch();
       setNewMessage("");
-      
+
       setStatus("Message submitted!");
 
       setTimeout(() => {
@@ -149,7 +149,7 @@ export default function DomainChatPage() {
 
             <span className={`message-box-verify ${status}`}>
               <button
-                className={"message-box-verify-button"}
+                className="message-box-verify-button"
                 onClick={() => onVerifyClick(message.id)}
                 disabled={status === "verifying"}
                 style={{ display: status === "idle" ? "inline" : "none" }}
@@ -160,13 +160,33 @@ export default function DomainChatPage() {
               {status === "verifying" && (
                 <span className="message-box-verify-icon spinner-icon small"></span>
               )}
-              {status === "valid" && <span className="message-box-verify-icon valid">✓</span>}
-              {status === "invalid" && <span className="message-box-verify-icon invalid">+</span>}
+              {status === "valid" && (
+                <span className="message-box-verify-icon valid">✓</span>
+              )}
+              {status === "invalid" && (
+                <span className="message-box-verify-icon invalid">+</span>
+              )}
             </span>
           </span>
         </div>
-        {message.text}
+
+        <div className="message-text">
+          {message.text}
+        </div>
+
+        {/* Upvote/Downvote Section */}
+        <div className="vote-section">
+          <button className="upvote-button" onClick={() => onVoteClick(message.id, "upvote")}>
+            ↑
+          </button>
+          <span className="vote-count">{message.upvotes}</span>
+          <button className="downvote-button" onClick={() => onVoteClick(message.id, "downvote")}>
+            ↓
+          </button>
+          <span className="vote-count">{message.downvotes}</span>
+        </div>
       </div>
+
     );
   }
 
@@ -190,13 +210,13 @@ export default function DomainChatPage() {
       <div className="text-center">
         <p>No messages yet</p>
         <p>
-          Be the first at <span>{domain}</span> to send a message!
+          Be the first at <span>{domain}</span> to send a report!
         </p>
       </div>
     );
   }
 
-  function renderStatusBox() {  
+  function renderStatusBox() {
     return (
       <div className="status-box">
         {status && (
@@ -209,44 +229,44 @@ export default function DomainChatPage() {
   return (
     <>
       <Head>
-        <title>Anonymous messages from {domain} - StealthNote</title>
+        <title>Anonymous reports in your organization</title>
       </Head>
       <div className="messages-container">
         <h1 className="messages-container-title">
-        Anonymous messages from members of{" "}
-        <span className="messages-container-title-domain">{domain}</span>
-      </h1>
+          Anonymous reports in your organization{" "}
+          <span className="messages-container-title-domain">{domain}</span>
+        </h1>
 
-      <div className="message-list">
-        {isFetching && !fetchedAt && renderLoading()}
-        {fetchedAt && messages.length === 0 && renderNoMessages()}
-        {!fetchedAt && error && <div>Error: {error.message}</div>}
+        <div className="message-list">
+          {isFetching && !fetchedAt && renderLoading()}
+          {fetchedAt && messages.length === 0 && renderNoMessages()}
+          {!fetchedAt && error && <div>Error: {error.message}</div>}
 
-        {messages.map(renderMessage)}
-        <div ref={messagesEndRef} />
+          {messages.map(renderMessage)}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <form className="message-input-container" onSubmit={handleMessageSubmit}>
+          <textarea
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your anonymous report..."
+            className="message-input-field"
+            disabled={isProving}
+            rows={2}
+          />
+          <button
+            type="submit"
+            className={`message-input-button ${isProving ? "loading" : ""}`}
+            disabled={isProving}
+          >
+            {isProving ? <span className="spinner-icon"></span> : "Submit"}
+          </button>
+        </form>
+
+        {renderStatusBox()}
+
       </div>
-
-      <form className="message-input-container" onSubmit={handleMessageSubmit}>
-        <textarea
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type your anonymous message..."
-          className="message-input-field"
-          disabled={isProving}
-          rows={2}
-        />
-        <button
-          type="submit"
-          className={`message-input-button ${isProving ? "loading" : ""}`}
-          disabled={isProving}
-        >
-          {isProving ? <span className="spinner-icon"></span> : "Submit"}
-        </button>
-      </form>
-
-      {renderStatusBox()}
-
-    </div>
     </>
   );
 }
