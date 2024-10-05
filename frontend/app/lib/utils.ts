@@ -36,18 +36,40 @@ export async function fetchMessages(domain: string) {
   //   // const fhenixclient = new fhenixclient({ provider });
   // }
 
-  return [
+  // Array di Message
+  const messages: Message[] = [
     {
-      "id": "string",
-      "text": "string",
-      "timestamp": 10,
-      "domain": "string",
-      "kid": "string",
-      "proof": "Uint8Array"
+      id: "msg_001",
+      text: "Senior management has been misreporting the company's environmental impact figures to investors",
+      timestamp: 1726663035,
+      domain: "ideacorp.aciceri.dev",
+      kid: "3A1A2BC3D4E5F678",
+      proof: base64ToUint8Array("U3RhcnQgYW5kIGVuY29kZWQgcHJvb2YgdXNlZA==")
+    },
+    {
+      id: "msg_002",
+      text: "The IT department has been intentionally ignoring multiple reports.",
+      timestamp: 1726673235,
+      domain: "example.laserromae.it",
+      kid: "B5E2C1A3F4D7A9F1",
+      proof: base64ToUint8Array("QW5vdGhlciBlbmNvZGVkIG1lc3NhZ2UgZm9yIHZlcmlmaWNhdGlvbg==")
     }
   ];
 
+  return messages;
 }
+
+// Funzione per decodificare Base64 in Uint8Array
+function base64ToUint8Array(base64: string): Uint8Array {
+  const binaryString = atob(base64);
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes;
+}
+
 
 export async function fetchMessage(id: string) {
   const response = await fetch(`/api/messages/${id}`);
