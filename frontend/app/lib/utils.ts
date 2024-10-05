@@ -25,18 +25,18 @@ declare global {
 }
 
 export async function fetchMessages(domain: string) {
-  if (typeof window.ethereum !== "undefined") {
-    const provider = new BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
+  // if (typeof window.ethereum !== "undefined") {
+  //   const provider = new BrowserProvider(window.ethereum);
+  //   const signer = await provider.getSigner();
 
-    const contract = new Contract(FischiettoSc.address, FischiettoAbi.abi, signer) as unknown as Fischietto;
-    const rep = await contract.getReport(1);
-    console.log("fdf")
-    console.log(rep);
-    
-    
-    // const fhenixclient = new fhenixclient({ provider });
-  }
+  //   const contract = new Contract(FischiettoSc.address, FischiettoAbi.abi, signer) as unknown as Fischietto;
+  //   const rep = await contract.reports(1)
+  //   console.log("fdf")
+  //   console.log(rep);
+
+
+  //   // const fhenixclient = new fhenixclient({ provider });
+  // }
 
   return [
     {

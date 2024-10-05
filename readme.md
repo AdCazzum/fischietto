@@ -102,7 +102,7 @@ TBD
 
 ### Technical Main Tasks Overview
 
-1. [] **Aztec Deep Dive for Identity Verification**: 
+1. [x] **Aztec Deep Dive for Identity Verification**: 
    - Investigate and fully integrate Aztec's zero-knowledge proofs (ZKPs) to handle whistleblower identity verification without exposing personal data. Use Noir circuits to protect privacy while validating credentials.
 
 2. [x] **UI Improvements**:
@@ -110,8 +110,8 @@ TBD
    - Reduce chat features, focusing more on a well-framed form-based UI.
    - Add upvote/downvote buttons to allow interaction with whistleblower reports.
 
-3. [-] **Develop Fhenix Smart Contracts for Storage**:
+3. [x] **Develop Fhenix Smart Contracts for Storage**:
    - Build and deploy smart contracts using Fhenix to securely store whistleblower reports and votes with encryption.
 
-4. [] **Integrate Fhenix Smart Contracts with UI**:
+4. [X] **Integrate Fhenix Smart Contracts with UI**:
    - Link the frontend UI to interact seamlessly with Fhenix’s smart contracts, enabling real-time submission and retrieval of encrypted whistleblowing data.
