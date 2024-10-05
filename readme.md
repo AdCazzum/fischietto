@@ -1,8 +1,8 @@
-# Fischetto
+# Fischietto
 
 ## Introduction
 
-For the **Fischetto project**, the goal is to dimostrate a real world **needed** zero-knowledge (ZK) based platform leveraging the Aztec network and Fhenix technologies. The purpose is to create a privacy-centric whistleblowing application that ensures both confidentiality and verifiability of the reports, while enhancing the security and anonymity of the whistleblower.
+For the **Fischietto project**, the goal is to dimostrate a real world **needed** zero-knowledge (ZK) based platform leveraging the Aztec network and Fhenix technologies. The purpose is to create a privacy-centric whistleblowing application that ensures both confidentiality and verifiability of the reports, while enhancing the security and anonymity of the whistleblower.
 
 ## W3PN - Pagency Framework
 
@@ -18,7 +18,7 @@ The **Pagency Framework** breaks down project development into 9 categories. Her
 8. **Resources**: Fhenix network, ZKP libraries (Aztec, Noir), Google OAuth, Laser Romae.
 9. **Success Metrics**: Number of reports submitted, proof verification success rate, upvote/downvote engagement, whistleblower anonymity protection.
 
-### Overview of the Fischetto Project:
+### Overview of the Fischietto Project:
 
 1. **Frontend (React)**: The user interface will allow whistleblowers to anonymously submit reports via a form. The report data will include:
    - **ID**: A unique identifier for the report.
@@ -105,12 +105,12 @@ TBD
 1. [] **Aztec Deep Dive for Identity Verification**: 
    - Investigate and fully integrate Aztec's zero-knowledge proofs (ZKPs) to handle whistleblower identity verification without exposing personal data. Use Noir circuits to protect privacy while validating credentials.
 
-2. [] **UI Improvements**:
+2. [x] **UI Improvements**:
    - Adjust colors for better contrast.
    - Reduce chat features, focusing more on a well-framed form-based UI.
    - Add upvote/downvote buttons to allow interaction with whistleblower reports.
 
-3. [] **Develop Fhenix Smart Contracts for Storage**:
+3. [-] **Develop Fhenix Smart Contracts for Storage**:
    - Build and deploy smart contracts using Fhenix to securely store whistleblower reports and votes with encryption.
 
 4. [] **Integrate Fhenix Smart Contracts with UI**:

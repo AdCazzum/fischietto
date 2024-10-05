@@ -13,7 +13,7 @@ export default function Home() {
 
       <div className="page">
         <main className="intro">
-          <h1 className="intro-title">Welcome to Fischetto 🤫🤐👮🔗</h1>
+          <h1 className="intro-title">Welcome to Fischietto 🤫🤐👮🔗</h1>
           <p>
             Fischietto is a secure whistleblowing platform that enables you to anonymously
             report workplace issues while ensuring your identity is protected.

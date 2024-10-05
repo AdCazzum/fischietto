@@ -15,6 +15,9 @@ import {
 import usePromise from "../hooks/use-promise";
 import Head from "next/head";
 import { set } from 'idb-keyval';
+import { FhenixClient } from "fhenixjs";
+import { BrowserProvider } from "ethers";
+import { EncryptionTypes } from "fhenixjs";
 
 export default function DomainChatPage() {
   const params = useParams();
@@ -24,6 +27,31 @@ export default function DomainChatPage() {
   const [newMessage, setNewMessage] = useState("");
   const [isProving, setIsProving] = useState(false);
   const [status, setStatus] = useState("");
+  const [defaultAccount, setDefaultAccount] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const doSomeMagic = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      try {
+        const provider = new BrowserProvider(window.ethereum);
+
+        const fhenixClient = new FhenixClient({ provider });
+        let encrypted = await fhenixClient.encrypt(5, EncryptionTypes.uint8);
+        console.log(encrypted)
+
+      } catch (error) {
+        console.error("Error connecting to wallet:", error);
+        setErrorMessage("Failed to connect wallet. " + error.message);
+      }
+    } else {
+      setErrorMessage("Please install Metamask!");
+    }
+  };
+
+
+  // const [newMessage, setNewMessage] = useState("");
+  // const [isProving, setIsProving] = useState(false);
+  // const [status, setStatus] = useState("");
   const [verificationStatus, setVerificationStatus] = useState<{
     [key: string]: "idle" | "verifying" | "valid" | "invalid";
   }>({});
@@ -84,6 +112,8 @@ export default function DomainChatPage() {
 
       message.kid = headers!.kid;
       console.log("Message signed with Google", { tokenPayload });
+
+      doSomeMagic() //having also the proof should be nice
 
       setIsProving(true);
       setStatus("Generating proof. This will take 1-2 minutes...");
@@ -269,7 +299,6 @@ export default function DomainChatPage() {
         </form>
 
         {renderStatusBox()}
-
       </div>
     </>
   );
