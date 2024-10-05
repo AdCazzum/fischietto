@@ -21,6 +21,25 @@ declare global {
 }
 
 export async function fetchMessages(domain: string) {
+  return [
+    {
+      "id": "msg_001",
+      "text": "Senior management has been misreporting the company's environmental impact figures to investors, concealing large amounts of toxic waste disposal violations.",
+      "timestamp": 1726663035,
+      "domain": "ideacorp.aciceri.dev",
+      "kid": "3A1A2BC3D4E5F678",
+      "proof": "U3RhcnQgYW5kIGVuY29kZWQgcHJvb2YgdXNlZA=="
+    },
+    {
+      "id": "msg_002",
+      "text": "The IT department has been intentionally ignoring multiple reports of data breaches involving customer financial information, leaving thousands of users vulnerable to identity theft.",
+      "timestamp": 1726673235,
+      "domain": "example.laserromae.it",
+      "kid": "B5E2C1A3F4D7A9F1",
+      "proof": "QW5vdGhlciBlbmNvZGVkIG1lc3NhZ2UgZm9yIHZlcmlmaWNhdGlvbg=="
+    }
+  ]
+
   const response = await fetch(`/api/messages?domain=${domain}`);
   if (response.ok) {
     const res = await response.json();
@@ -470,7 +489,7 @@ export async function verifyProof(message: Message) {
   };
 
   const startTime = performance.now();
- 
+
   await verifier.instantiate({ crsPath: process.env.TEMP_DIR });
   const result = await verifier.verifyProof(proofData, Uint8Array.from(vkey));
   const verificationTime = performance.now() - startTime;
