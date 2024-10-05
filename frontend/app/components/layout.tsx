@@ -5,7 +5,7 @@ function Header() {
   return (
     <header className="navbar">
       <div className="logo">
-        <Link href="/">StealthNote</Link>
+        <Link href="/">Fischietto</Link>
       </div>
       <nav>
         <Link href="/how-it-works" className="nav-link">
@@ -15,7 +15,7 @@ function Header() {
           className="nav-link"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://github.com/saleel/stealthnote"
+          href="https://github.com/AdCazzum/fischietto"
         >
           Github
         </a>
