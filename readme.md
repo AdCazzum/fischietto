@@ -63,6 +63,8 @@ To configure the frontend integrated with the Aztec solution, which ensures iden
 
 This enables whistleblowers to log in and verify their identity via Google without exposing personal data, thanks to the privacy-preserving ZK proofs implemented with Aztec.
 
+### 
+
 ### Smart Contracts:
 
 TBD
