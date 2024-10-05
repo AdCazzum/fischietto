@@ -20,18 +20,52 @@ import type {
   TypedContractMethod,
 } from "../common";
 
-export interface FischiettoInterface extends Interface {
-  getFunction(nameOrSignature: "reports" | "whistle"): FunctionFragment;
+export type InEuint256Struct = { data: BytesLike };
 
+export type InEuint256StructOutput = [data: string] & { data: string };
+
+export declare namespace Fischietto {
+  export type EncryptedMessageStruct = {
+    part1: BigNumberish;
+    part2: BigNumberish;
+    part3: BigNumberish;
+    part4: BigNumberish;
+  };
+
+  export type EncryptedMessageStructOutput = [
+    part1: bigint,
+    part2: bigint,
+    part3: bigint,
+    part4: bigint
+  ] & { part1: bigint; part2: bigint; part3: bigint; part4: bigint };
+}
+
+export interface FischiettoInterface extends Interface {
+  getFunction(
+    nameOrSignature: "getMessage" | "reports" | "whistle"
+  ): FunctionFragment;
+
+  encodeFunctionData(
+    functionFragment: "getMessage",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "reports",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "whistle",
-    values: [BigNumberish, string, BigNumberish, string, string, string]
+    values: [
+      BigNumberish,
+      [InEuint256Struct, InEuint256Struct, InEuint256Struct, InEuint256Struct],
+      BigNumberish,
+      string,
+      string,
+      string
+    ]
   ): string;
 
+  decodeFunctionResult(functionFragment: "getMessage", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "reports", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "whistle", data: BytesLike): Result;
 }
@@ -79,11 +113,23 @@ export interface Fischietto extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  getMessage: TypedContractMethod<
+    [id: BigNumberish],
+    [[bigint, bigint, bigint, bigint]],
+    "view"
+  >;
+
   reports: TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [string, bigint, string, string, string] & {
-        message: string;
+      [
+        Fischietto.EncryptedMessageStructOutput,
+        bigint,
+        string,
+        string,
+        string
+      ] & {
+        eMessage: Fischietto.EncryptedMessageStructOutput;
         timestamp: bigint;
         company: string;
         proof: string;
@@ -96,7 +142,12 @@ export interface Fischietto extends BaseContract {
   whistle: TypedContractMethod<
     [
       _id: BigNumberish,
-      _message: string,
+      _eMessage: [
+        InEuint256Struct,
+        InEuint256Struct,
+        InEuint256Struct,
+        InEuint256Struct
+      ],
       _timestamp: BigNumberish,
       _company: string,
       _proof: string,
@@ -111,12 +162,25 @@ export interface Fischietto extends BaseContract {
   ): T;
 
   getFunction(
+    nameOrSignature: "getMessage"
+  ): TypedContractMethod<
+    [id: BigNumberish],
+    [[bigint, bigint, bigint, bigint]],
+    "view"
+  >;
+  getFunction(
     nameOrSignature: "reports"
   ): TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [string, bigint, string, string, string] & {
-        message: string;
+      [
+        Fischietto.EncryptedMessageStructOutput,
+        bigint,
+        string,
+        string,
+        string
+      ] & {
+        eMessage: Fischietto.EncryptedMessageStructOutput;
         timestamp: bigint;
         company: string;
         proof: string;
@@ -130,7 +194,12 @@ export interface Fischietto extends BaseContract {
   ): TypedContractMethod<
     [
       _id: BigNumberish,
-      _message: string,
+      _eMessage: [
+        InEuint256Struct,
+        InEuint256Struct,
+        InEuint256Struct,
+        InEuint256Struct
+      ],
       _timestamp: BigNumberish,
       _company: string,
       _proof: string,

@@ -2,5 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as fheOsSol from "./FheOS.sol";
-export * as access from "./access";
 export { FHE__factory } from "./FHE__factory";
