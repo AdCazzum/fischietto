@@ -4,6 +4,20 @@
 
 For the **Fischetto project**, the goal is to dimostrate a real world **needed** zero-knowledge (ZK) based platform leveraging the Aztec network and Fhenix technologies. The purpose is to create a privacy-centric whistleblowing application that ensures both confidentiality and verifiability of the reports, while enhancing the security and anonymity of the whistleblower.
 
+## W3PN - Pagency Framework
+
+The **Pagency Framework** breaks down project development into 9 categories. Here's how it applies to **Fischietto**:
+
+1. **Humans**: Whistleblowers seeking to report workplace misconduct anonymously.
+2. **Data**: Whistleblower reports, timestamps, and upvotes/downvotes, stored encrypted on-chain.
+3. **Challenge**: Ensuring privacy and anonymity while verifying identity.
+4. **Threat Actors**: Malicious actors seeking to uncover whistleblower identities or manipulate reports.
+5. **Privacy Layers**: Zero Knowledge Proofs (ZKP), encrypted storage on Fhenix.
+6. **Solution**: Integrating ZKP, Google/Laser Romae for identity verification, Fhenix for data storage.
+7. **Partners**: Laser Romae (for ID verification), Fhenix, and potentially other blockchain solutions.
+8. **Resources**: Fhenix network, ZKP libraries (Aztec, Noir), Google OAuth, Laser Romae.
+9. **Success Metrics**: Number of reports submitted, proof verification success rate, upvote/downvote engagement, whistleblower anonymity protection.
+
 ### Overview of the Fischetto Project:
 
 1. **Frontend (React)**: The user interface will allow whistleblowers to anonymously submit reports via a form. The report data will include:
@@ -63,7 +77,22 @@ To configure the frontend integrated with the Aztec solution, which ensures iden
 
 This enables whistleblowers to log in and verify their identity via Google without exposing personal data, thanks to the privacy-preserving ZK proofs implemented with Aztec.
 
-### 
+
+### How to run
+
+Set your environment variables:
+```sh
+# Google Client ID
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=
+```
+
+Run below commands to start the Next.js app:
+```sh
+cd frontend/app
+yarn
+yarn dev
+```
+
 
 ### Smart Contracts:
 
