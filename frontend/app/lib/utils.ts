@@ -390,32 +390,43 @@ export async function generateProof(
     Uint8Array.from(new TextEncoder().encode("aztecprotocol.com"))
   );
 
+  // const input = {
+  //   pubkey_modulus_limbs: splitBigIntToChunks(modulusBigInt, 120, 18).map((s) =>
+  //     s.toString()
+  //   ),
+  //   redc_params_limbs: splitBigIntToChunks(redcParam, 120, 18).map((s) =>
+  //     s.toString()
+  //   ),
+  //   data: Array.from(paddedData).map((s) => s.toString()),
+  //   data_length: signedData.length,
+  //   signature_limbs: splitBigIntToChunks(signatureBigInt, 120, 18).map((s) =>
+  //     s.toString()
+  //   ),
+  //   domain_name: Array.from(domainBytes).map((s) => s.toString()),
+  //   domain_name_length: "aztecprotocol.com".length,
+  //   nonce: Array.from(new TextEncoder().encode(payload.nonce)).map((s) =>
+  //     s.toString()
+  //   ),
+  // };
+
   const input = {
-    pubkey_modulus_limbs: splitBigIntToChunks(modulusBigInt, 120, 18).map((s) =>
-      s.toString()
-    ),
-    redc_params_limbs: splitBigIntToChunks(redcParam, 120, 18).map((s) =>
-      s.toString()
-    ),
-    data: Array.from(paddedData).map((s) => s.toString()),
-    data_length: signedData.length,
-    signature_limbs: splitBigIntToChunks(signatureBigInt, 120, 18).map((s) =>
-      s.toString()
-    ),
-    domain_name: Array.from(domainBytes).map((s) => s.toString()),
-    domain_name_length: "aztecprotocol.com".length,
-    nonce: Array.from(new TextEncoder().encode(payload.nonce)).map((s) =>
-      s.toString()
-    ),
-  };
+    x: 1,
+    y: 2
+  }
 
   console.log("Inputs for circuit", JSON.stringify(input));
 
   // Generate witness and prove
   const startTime = performance.now();
+  console.log(1, startTime)
   const { witness } = await noir.execute(input);
+  console.log(2, witness)
+
   const proof = await backend.generateProof(witness);
+  console.log(3, proof)
+
   const provingTime = performance.now() - startTime;
+  console.log(4, provingTime)
 
   console.log("Proof", proof);
 
@@ -443,9 +454,9 @@ export async function instantiateVerifier() {
 
 export async function verifyProof(message: Message) {
   // We need to generate the vkey when circuit is modified. Generated one is saved to vkey.json
-  // const backend = new UltraHonkBackend(circuit as CompiledCircuit);
-  // const vkey = await backend.getVerificationKey();
-  // console.log(JSON.stringify(Array.from(vkey)));
+  const backend = new UltraHonkBackend(circuit as CompiledCircuit);
+  const vkey = await backend.getVerificationKey();
+  console.log(JSON.stringify(Array.from(vkey)));
 
   const verifier = new UltraHonkVerifier();
 
