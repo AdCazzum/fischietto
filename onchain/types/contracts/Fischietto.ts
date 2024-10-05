@@ -8,6 +8,7 @@ import type {
   FunctionFragment,
   Result,
   Interface,
+  EventFragment,
   ContractRunner,
   ContractMethod,
   Listener,
@@ -16,9 +17,17 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
+  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "../common";
+
+export type PermissionStruct = { publicKey: BytesLike; signature: BytesLike };
+
+export type PermissionStructOutput = [publicKey: string, signature: string] & {
+  publicKey: string;
+  signature: string;
+};
 
 export type InEuint256Struct = { data: BytesLike };
 
@@ -42,11 +51,28 @@ export declare namespace Fischietto {
 
 export interface FischiettoInterface extends Interface {
   getFunction(
-    nameOrSignature: "getMessage" | "reports" | "whistle"
+    nameOrSignature:
+      | "eip712Domain"
+      | "getMessage"
+      | "owner"
+      | "reportExists"
+      | "reports"
+      | "whistle"
   ): FunctionFragment;
 
+  getEvent(nameOrSignatureOrTopic: "EIP712DomainChanged"): EventFragment;
+
+  encodeFunctionData(
+    functionFragment: "eip712Domain",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "getMessage",
+    values: [BigNumberish, PermissionStruct]
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "reportExists",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -65,9 +91,28 @@ export interface FischiettoInterface extends Interface {
     ]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "eip712Domain",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getMessage", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "reportExists",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "reports", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "whistle", data: BytesLike): Result;
+}
+
+export namespace EIP712DomainChangedEvent {
+  export type InputTuple = [];
+  export type OutputTuple = [];
+  export interface OutputObject {}
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface Fischietto extends BaseContract {
@@ -113,11 +158,31 @@ export interface Fischietto extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  getMessage: TypedContractMethod<
-    [id: BigNumberish],
-    [[bigint, bigint, bigint, bigint]],
+  eip712Domain: TypedContractMethod<
+    [],
+    [
+      [string, string, string, bigint, string, string, bigint[]] & {
+        fields: string;
+        name: string;
+        version: string;
+        chainId: bigint;
+        verifyingContract: string;
+        salt: string;
+        extensions: bigint[];
+      }
+    ],
     "view"
   >;
+
+  getMessage: TypedContractMethod<
+    [id: BigNumberish, permission: PermissionStruct],
+    [[string, string, string, string]],
+    "view"
+  >;
+
+  owner: TypedContractMethod<[], [string], "view">;
+
+  reportExists: TypedContractMethod<[arg0: BigNumberish], [boolean], "view">;
 
   reports: TypedContractMethod<
     [arg0: BigNumberish],
@@ -162,12 +227,35 @@ export interface Fischietto extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "getMessage"
+    nameOrSignature: "eip712Domain"
   ): TypedContractMethod<
-    [id: BigNumberish],
-    [[bigint, bigint, bigint, bigint]],
+    [],
+    [
+      [string, string, string, bigint, string, string, bigint[]] & {
+        fields: string;
+        name: string;
+        version: string;
+        chainId: bigint;
+        verifyingContract: string;
+        salt: string;
+        extensions: bigint[];
+      }
+    ],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "getMessage"
+  ): TypedContractMethod<
+    [id: BigNumberish, permission: PermissionStruct],
+    [[string, string, string, string]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "owner"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "reportExists"
+  ): TypedContractMethod<[arg0: BigNumberish], [boolean], "view">;
   getFunction(
     nameOrSignature: "reports"
   ): TypedContractMethod<
@@ -209,5 +297,24 @@ export interface Fischietto extends BaseContract {
     "nonpayable"
   >;
 
-  filters: {};
+  getEvent(
+    key: "EIP712DomainChanged"
+  ): TypedContractEvent<
+    EIP712DomainChangedEvent.InputTuple,
+    EIP712DomainChangedEvent.OutputTuple,
+    EIP712DomainChangedEvent.OutputObject
+  >;
+
+  filters: {
+    "EIP712DomainChanged()": TypedContractEvent<
+      EIP712DomainChangedEvent.InputTuple,
+      EIP712DomainChangedEvent.OutputTuple,
+      EIP712DomainChangedEvent.OutputObject
+    >;
+    EIP712DomainChanged: TypedContractEvent<
+      EIP712DomainChangedEvent.InputTuple,
+      EIP712DomainChangedEvent.OutputTuple,
+      EIP712DomainChangedEvent.OutputObject
+    >;
+  };
 }
