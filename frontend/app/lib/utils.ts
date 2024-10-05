@@ -6,6 +6,10 @@ import {
 import circuit from "../assets/circuit.json";
 import vkey from "../assets/circuit-vkey.json";
 import { Message } from "./types";
+import { Fischietto } from "../../../onchain/types"
+import FischiettoAbi from "../../../onchain/artifacts/contracts/Fischietto.sol/Fischietto.json" // Import ABI
+import FischiettoSc from "../../../onchain/deployments/localfhenix/Fischietto.json" // Import ABI
+import { BrowserProvider, Contract } from "ethers";
 
 declare global {
   interface Window {
@@ -21,6 +25,19 @@ declare global {
 }
 
 export async function fetchMessages(domain: string) {
+  if (typeof window.ethereum !== "undefined") {
+    const provider = new BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+
+    const contract = new Contract(FischiettoSc.address, FischiettoAbi.abi, signer) as unknown as Fischietto;
+    const rep = await contract.getReport(1);
+    console.log("fdf")
+    console.log(rep);
+    
+    
+    // const fhenixclient = new fhenixclient({ provider });
+  }
+
   return [
     {
       "id": "msg_001",
@@ -40,20 +57,8 @@ export async function fetchMessages(domain: string) {
       "kid": "B5E2C1A3F4D7A9F1",
       "proof": "QW5vdGhlciBlbmNvZGVkIG1lc3NhZ2UgZm9yIHZlcmlmaWNhdGlvbg=="
     }
-  ]
+  ];
 
-  const response = await fetch(`/api/messages?domain=${domain}`);
-  if (response.ok) {
-    const res = await response.json();
-    const messages = res.map((message: Message) => {
-      message.timestamp = new Date(message.timestamp).getTime();
-      return message;
-    });
-
-    return messages;
-  } else {
-    throw new Error("Failed to fetch messages");
-  }
 }
 
 export async function fetchMessage(id: string) {
