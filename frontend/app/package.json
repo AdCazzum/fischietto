@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@metamask/providers": "^17.2.1",
     "@noir-lang/backend_barretenberg": "https://gitpkg.vercel.app/saleel/noir/tooling/noir_js_backend_barretenberg?dist",
     "@noir-lang/noir_js": "0.34.0",
     "@supabase/supabase-js": "^2.45.4",

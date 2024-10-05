@@ -32,8 +32,6 @@ export default function DomainChatPage() {
   const [newMessage, setNewMessage] = useState("");
   const [isProving, setIsProving] = useState(false);
   const [status, setStatus] = useState("");
-  const [defaultAccount, setDefaultAccount] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const doSomeMagic = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -42,18 +40,18 @@ export default function DomainChatPage() {
         const signer = await provider.getSigner();
 
         const contract = new Contract(FischiettoSc.address, FischiettoAbi.abi, signer) as unknown as Fischietto;
-        
+
         const fhenixClient = new FhenixClient({ provider });
         // let encrypted = await fhenixClient.encrypt(5, EncryptionTypes.uint8);
-      
-        
+        EncryptionTypes;
+
         console.log(contract.connect(signer).whistle(
           1,
           [
             await fhenixClient.encrypt_uint256(BigInt(0)),
             await fhenixClient.encrypt_uint256(BigInt(0)),
             await fhenixClient.encrypt_uint256(BigInt(0)),
-            await fhenixClient.encrypt_uint256(BigInt(0))         
+            await fhenixClient.encrypt_uint256(BigInt(0))
           ],
           1,
           "BeatData",
@@ -63,10 +61,9 @@ export default function DomainChatPage() {
 
       } catch (error) {
         console.error("Error connecting to wallet:", error);
-        setErrorMessage("Failed to connect wallet. " + error.message);
       }
     } else {
-      setErrorMessage("Please install Metamask!");
+      console.log("Please install Metamask!");
     }
   };
 
@@ -80,7 +77,7 @@ export default function DomainChatPage() {
 
   const [messages, { isFetching, error, reFetch, fetchedAt }] = usePromise<
     Message[]
-  >(() => fetchMessages(domain), {
+  >(() => fetchMessages("domain"), {
     defaultValue: [],
     dependencies: [domain],
   });
@@ -147,6 +144,7 @@ export default function DomainChatPage() {
 
       setStatus("Proof generated. Submitting message...");
       // await submitMessage(message);
+      submitMessage;
 
       // Update message list
       reFetch();

@@ -4,15 +4,12 @@ import {
   UltraHonkVerifier,
 } from "@noir-lang/backend_barretenberg";
 import circuit from "../assets/circuit.json";
-import vkey from "../assets/circuit-vkey.json";
 import { Message } from "./types";
-import { Fischietto } from "../../../onchain/types"
-import FischiettoAbi from "../../../onchain/artifacts/contracts/Fischietto.sol/Fischietto.json" // Import ABI
-import FischiettoSc from "../../../onchain/deployments/localfhenix/Fischietto.json" // Import ABI
-import { BrowserProvider, Contract } from "ethers";
+import { MetaMaskInpageProvider } from "@metamask/providers";
 
 declare global {
   interface Window {
+    ethereum?: MetaMaskInpageProvider
     google?: {
       accounts: {
         id: {
@@ -25,6 +22,7 @@ declare global {
 }
 
 export async function fetchMessages(domain: string) {
+  domain != "";
   // if (typeof window.ethereum !== "undefined") {
   //   const provider = new BrowserProvider(window.ethereum);
   //   const signer = await provider.getSigner();
@@ -40,22 +38,12 @@ export async function fetchMessages(domain: string) {
 
   return [
     {
-      "id": "msg_001",
-      "text":
-        "Senior management has been misreporting the company's environmental impact figures to investors",
-      "timestamp": 1726663035,
-      "domain": "ideacorp.aciceri.dev",
-      "kid": "3A1A2BC3D4E5F678",
-      "proof": "U3RhcnQgYW5kIGVuY29kZWQgcHJvb2YgdXNlZA=="
-    },
-    {
-      "id": "msg_002",
-      "text":
-        "The IT department has been intentionally ignoring multiple reports.",
-      "timestamp": 1726673235,
-      "domain": "example.laserromae.it",
-      "kid": "B5E2C1A3F4D7A9F1",
-      "proof": "QW5vdGhlciBlbmNvZGVkIG1lc3NhZ2UgZm9yIHZlcmlmaWNhdGlvbg=="
+      "id": "string",
+      "text": "string",
+      "timestamp": 10,
+      "domain": "string",
+      "kid": "string",
+      "proof": "Uint8Array"
     }
   ];
 
@@ -344,7 +332,7 @@ export async function generateProof(
   const [headerB64, payloadB64] = idToken.split(".");
   const header = JSON.parse(atob(headerB64));
   const payload = JSON.parse(atob(payloadB64));
-
+  payload;
   // Fetch Google's public keys and find the correct key based on the 'kid' in the JWT header
   const keys = await getGooglePublicKeys();
   const key = keys.find((k: { kid: string }) => k.kid === header.kid);
@@ -353,7 +341,7 @@ export async function generateProof(
   }
 
   const { publicKey, modulusBigInt, redcParam } = await convertPubKey(key);
-
+  modulusBigInt; redcParam;
   const signedData = new TextEncoder().encode(
     idToken.split(".").slice(0, 2).join(".")
   );
@@ -368,7 +356,7 @@ export async function generateProof(
       .map((c) => c.charCodeAt(0))
   );
   const signatureBigInt = BigInt("0x" + Buffer.from(signature).toString("hex"));
-
+  signatureBigInt;
   // Verify signature locally
   const isValid = await crypto.subtle.verify(
     "RSASSA-PKCS1-v1_5",
@@ -382,7 +370,7 @@ export async function generateProof(
   }
 
   // Initialize Noir JS
-  const backend = new UltraHonkBackend(circuit as CompiledCircuit);
+  const backend = new UltraHonkBackend(circuit as CompiledCircuit); backend;
   const noir = new Noir(circuit as CompiledCircuit);
 
   // Pad data to 1024 bytes
