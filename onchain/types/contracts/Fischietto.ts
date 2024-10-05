@@ -47,6 +47,28 @@ export declare namespace Fischietto {
     part3: bigint,
     part4: bigint
   ] & { part1: bigint; part2: bigint; part3: bigint; part4: bigint };
+
+  export type ReportStruct = {
+    eMessage: Fischietto.EncryptedMessageStruct;
+    timestamp: BigNumberish;
+    company: string;
+    proof: string;
+    kid: string;
+  };
+
+  export type ReportStructOutput = [
+    eMessage: Fischietto.EncryptedMessageStructOutput,
+    timestamp: bigint,
+    company: string,
+    proof: string,
+    kid: string
+  ] & {
+    eMessage: Fischietto.EncryptedMessageStructOutput;
+    timestamp: bigint;
+    company: string;
+    proof: string;
+    kid: string;
+  };
 }
 
 export interface FischiettoInterface extends Interface {
@@ -54,6 +76,7 @@ export interface FischiettoInterface extends Interface {
     nameOrSignature:
       | "eip712Domain"
       | "getMessage"
+      | "getReport"
       | "owner"
       | "reportExists"
       | "reports"
@@ -69,6 +92,10 @@ export interface FischiettoInterface extends Interface {
   encodeFunctionData(
     functionFragment: "getMessage",
     values: [BigNumberish, PermissionStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getReport",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -96,6 +123,7 @@ export interface FischiettoInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getMessage", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getReport", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "reportExists",
@@ -180,6 +208,12 @@ export interface Fischietto extends BaseContract {
     "view"
   >;
 
+  getReport: TypedContractMethod<
+    [id: BigNumberish],
+    [Fischietto.ReportStructOutput],
+    "view"
+  >;
+
   owner: TypedContractMethod<[], [string], "view">;
 
   reportExists: TypedContractMethod<[arg0: BigNumberish], [boolean], "view">;
@@ -248,6 +282,13 @@ export interface Fischietto extends BaseContract {
   ): TypedContractMethod<
     [id: BigNumberish, permission: PermissionStruct],
     [[string, string, string, string]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getReport"
+  ): TypedContractMethod<
+    [id: BigNumberish],
+    [Fischietto.ReportStructOutput],
     "view"
   >;
   getFunction(

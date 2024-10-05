@@ -42,10 +42,24 @@ export default function DomainChatPage() {
         const signer = await provider.getSigner();
 
         const contract = new Contract(FischiettoSc.address, FischiettoAbi.abi, signer) as unknown as Fischietto;
-
+        
         const fhenixClient = new FhenixClient({ provider });
-        let encrypted = await fhenixClient.encrypt(5, EncryptionTypes.uint8);
-        console.log(encrypted)
+        // let encrypted = await fhenixClient.encrypt(5, EncryptionTypes.uint8);
+      
+        
+        console.log(contract.connect(signer).whistle(
+          1,
+          [
+            await fhenixClient.encrypt_uint256(BigInt(0)),
+            await fhenixClient.encrypt_uint256(BigInt(0)),
+            await fhenixClient.encrypt_uint256(BigInt(0)),
+            await fhenixClient.encrypt_uint256(BigInt(0))         
+          ],
+          1,
+          "BeatData",
+          "xxx",
+          "yyy"
+        ));
 
       } catch (error) {
         console.error("Error connecting to wallet:", error);

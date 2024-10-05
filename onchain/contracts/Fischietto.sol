@@ -31,6 +31,12 @@ contract Fischietto is Permissioned {
   mapping(uint256 => bool) public reportExists;
   // mapping(uint256 => uint256) public votes;
 
+  function getReport(
+    uint256 id 
+  ) view external returns(Report memory report) {
+    report = reports[id];
+  }
+
   function whistle(
     uint256 _id,
     inEuint256[4] calldata _eMessage,
