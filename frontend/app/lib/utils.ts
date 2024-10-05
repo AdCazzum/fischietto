@@ -24,7 +24,8 @@ export async function fetchMessages(domain: string) {
   return [
     {
       "id": "msg_001",
-      "text": "Senior management has been misreporting the company's environmental impact figures to investors, concealing large amounts of toxic waste disposal violations.",
+      "text":
+        "Senior management has been misreporting the company's environmental impact figures to investors",
       "timestamp": 1726663035,
       "domain": "ideacorp.aciceri.dev",
       "kid": "3A1A2BC3D4E5F678",
@@ -32,7 +33,8 @@ export async function fetchMessages(domain: string) {
     },
     {
       "id": "msg_002",
-      "text": "The IT department has been intentionally ignoring multiple reports of data breaches involving customer financial information, leaving thousands of users vulnerable to identity theft.",
+      "text":
+        "The IT department has been intentionally ignoring multiple reports.",
       "timestamp": 1726673235,
       "domain": "example.laserromae.it",
       "kid": "B5E2C1A3F4D7A9F1",

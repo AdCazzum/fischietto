@@ -132,6 +132,10 @@ export default function DomainChatPage() {
     }
   }
 
+  function onVoteClick(id: string, type: string) {
+    return id + type;
+  }
+
   function renderMessage(message: Message, index: number) {
     const timestamp = new Date(message.timestamp);
     const status = verificationStatus[message.id] || "idle";
@@ -179,11 +183,11 @@ export default function DomainChatPage() {
           <button className="upvote-button" onClick={() => onVoteClick(message.id, "upvote")}>
             ↑
           </button>
-          <span className="vote-count">{message.upvotes}</span>
+          {/* <span className="vote-count">{message.upvotes}</span> */}
           <button className="downvote-button" onClick={() => onVoteClick(message.id, "downvote")}>
             ↓
           </button>
-          <span className="vote-count">{message.downvotes}</span>
+          {/* <span className="vote-count">{message.downvotes}</span> */}
         </div>
       </div>
 
